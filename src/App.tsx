@@ -81,7 +81,7 @@ function App() {
 
   return (
     <>
-      <div className="align-center flex min-h-screen flex-col items-center justify-center bg-blue-100 p-4">
+      <div className="align-center flex min-h-screen flex-col items-center justify-center bg-green-200 p-4">
         <h1 className="text-3xl font-bold">Find All License Plates</h1>
         <p className="mt-4 text-lg">
           New Game Beta From{" "}
@@ -157,17 +157,17 @@ function App() {
                     onChange={() => handlePlateCheck(plate.id)}
                     className="w-5 h-5 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2"
                   />
-                  <h3 className="text-xl font-bold text-gray-800">
+                  <h3 className="text-xl font-bold text-blue-500">
                     {plate.state}
                   </h3>
                   {checkedPlates.has(plate.id) && (
-                    <span className="text-green-600 font-semibold text-sm">
+                    <span className="text-gray-800 font-semibold text-sm">
                       ✓ Found
                     </span>
                   )}
                 </div>
               </div>
-              <h4 className="text-lg font-semibold text-green-600 mb-2">
+              <h4 className="text-lg font-semibold text-b-600 mb-2">
                 {plate.design_name}
               </h4>
               <p className="text-gray-700 mb-2">{plate.design_description}</p>
