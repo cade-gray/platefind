@@ -1,0 +1,127 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap">
+  <style>
+    body { margin: 0; }
+    * { box-sizing: border-box; }
+    .pf {
+      --accent: #00a35c; --accent-soft: #e2f5eb; --accent-line: #9fdcbe;
+      --bg: #f4f6f5; --surface: #ffffff; --surface2: #eef1ef;
+      --border: #dfe4e1; --border2: #c8d0cc;
+      --text: #0f1a15; --text2: #55625b; --text3: #7f8c85;
+      --warn: #9a6a08; --warn-soft: #fbf1dc; --warn-line: #e6cd96;
+      --danger: #c4452c; --danger-soft: #fbeae6; --danger-line: #eec3b8;
+      --shadow: 0 1px 2px rgba(15,26,21,.05), 0 10px 26px -16px rgba(15,26,21,.30);
+      font-family: "Public Sans", -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased;
+    }
+    .pf h1, .pf h2, .pf h3 { font-family: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif; margin: 0; letter-spacing: -0.015em; }
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; box-shadow: var(--shadow); padding: 20px 22px; }
+    .chip { height: 40px; padding: 0 15px; border-radius: 999px; display: inline-flex; align-items: center; gap: 9px;
+            font-size: 13.5px; font-weight: 700; border: 1px solid var(--border); background: var(--surface); color: var(--text2); }
+    .lbl { font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--text3); }
+    .body { font-size: 13.5px; line-height: 1.55; color: var(--text2); margin: 10px 0 0; }
+    .dark { background: #0d1411; border-radius: 14px; border: 1px solid #26312b; padding: 20px 22px; }
+  </style>
+</helmet>
+
+<div class="pf" style="width: 920px; min-height: 620px; padding: 32px;">
+
+  <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 22px;">
+    <div>
+      <h2 style="font-size: 22px; font-weight: 700;">Signal, and the lack of it</h2>
+      <div style="font-size: 13.5px; color: var(--text2); margin-top: 4px;">The header chip is the single place the app admits what it knows. Four states, one line of copy each.</div>
+    </div>
+    <div style="font-size: 12.5px; color: var(--text3);">Checking off plates works in all four</div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;">
+
+    <div class="card">
+      <div class="lbl">Default</div>
+      <div style="margin-top: 12px;">
+        <span class="chip" style="border-color: var(--accent-line); background: var(--accent-soft); color: var(--accent);">
+          <svg width="18" height="18" style="display: block;"><path d="M2.4 7.4 A10.6 10.6 0 0 1 15.6 7.4" style="fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round"></path><path d="M5.2 10.4 A6.6 6.6 0 0 1 12.8 10.4" style="fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round"></path><circle cx="9" cy="14" r="1.5" style="fill:currentColor"></circle></svg>
+          Online
+        </span>
+      </div>
+      <p class="body">Signal is good and the plate list matches the server. No banner, no fuss — the chip is the only thing on screen that mentions the network at all.</p>
+    </div>
+
+    <div class="card">
+      <div class="lbl">First load, or a refresh</div>
+      <div style="margin-top: 12px;">
+        <span class="chip" style="border-color: var(--border2); background: var(--surface2);">
+          <svg width="18" height="18" style="display: block;"><path d="M15.2 9 A6.2 6.2 0 1 1 13.1 4.3" style="fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round"></path><path d="M13.3 1.5 L13.3 5 L9.8 5" style="fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round"></path></svg>
+          Updating list…
+        </span>
+      </div>
+      <p class="body">The saved list is already on screen and fully usable while the new one downloads in the background. Nothing blocks, nothing spins in the middle of the page.</p>
+    </div>
+
+    <div class="card">
+      <div class="lbl">No signal</div>
+      <div style="margin-top: 12px;">
+        <span class="chip" style="border-color: var(--warn-line); background: var(--warn-soft); color: var(--warn);">
+          <svg width="18" height="18" style="display: block;"><path d="M5.2 10.4 A6.6 6.6 0 0 1 12.8 10.4" style="fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round"></path><circle cx="9" cy="14" r="1.5" style="fill:currentColor"></circle><path d="M3.4 3.4 L14.6 14.6" style="fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round"></path></svg>
+          Offline — cached
+        </span>
+      </div>
+      <p class="body">Amber, not red: this is an expected condition on a road trip, not a failure. A one-line banner under the header says when the list was saved and confirms that finds are being kept on the device.</p>
+    </div>
+
+    <div class="card">
+      <div class="lbl">No signal, old cache</div>
+      <div style="margin-top: 12px;">
+        <span class="chip" style="border-color: var(--danger-line); background: var(--danger-soft); color: var(--danger);">
+          <svg width="18" height="18" style="display: block;"><path d="M9 2.6 L16.6 15.4 L1.4 15.4 Z" style="fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round"></path><path d="M9 7 L9 10.6" style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round"></path><circle cx="9" cy="13" r=".95" style="fill:currentColor"></circle></svg>
+          List from 12 Jun
+        </span>
+      </div>
+      <p class="body">Once the saved list is more than a month old the chip names the date instead of saying “offline”. New plate designs may be missing; the game still counts.</p>
+    </div>
+  </div>
+
+  <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;">
+
+    <div class="card" style="padding: 0; overflow: hidden;">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 13px 18px; background: var(--warn-soft); border-bottom: 1px solid var(--warn-line); color: var(--warn);">
+        <svg width="18" height="18" style="display: block; flex: none;"><path d="M9 2.6 L16.6 15.4 L1.4 15.4 Z" style="fill:none;stroke:currentColor;stroke-width:1.6;stroke-linejoin:round"></path><path d="M9 7 L9 10.6" style="fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round"></path><circle cx="9" cy="13" r=".95" style="fill:currentColor"></circle></svg>
+        <div style="font-size: 13px; font-weight: 700;">No signal — showing the list saved today at 2:14 PM.</div>
+      </div>
+      <div style="padding: 16px 18px 20px;">
+        <div class="lbl">The banner</div>
+        <p class="body">Appears once, directly under the header, and stays until signal returns. It never covers content and is never dismissible — if it is gone, you are online.</p>
+      </div>
+    </div>
+
+    <div class="dark">
+      <div style="font-size: 11px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: #6d7b74;">Dark mode</div>
+      <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px;">
+        <span class="chip" style="border-color: #1d5a3c; background: #102c1f; color: #33d489;">
+          <span style="width: 8px; height: 8px; border-radius: 999px; background: currentColor; display: block;"></span>Online
+        </span>
+        <span class="chip" style="border-color: #3a483f; background: #1a231e; color: #98a69e;">
+          <span style="width: 8px; height: 8px; border-radius: 999px; background: currentColor; display: block;"></span>Updating list…
+        </span>
+        <span class="chip" style="border-color: #4d3c17; background: #29200f; color: #e2a83f;">
+          <span style="width: 8px; height: 8px; border-radius: 999px; background: currentColor; display: block;"></span>Offline — cached
+        </span>
+        <span class="chip" style="border-color: #55271f; background: #2b1512; color: #f0705a;">
+          <span style="width: 8px; height: 8px; border-radius: 999px; background: currentColor; display: block;"></span>List from 12 Jun
+        </span>
+      </div>
+      <p style="font-size: 13.5px; line-height: 1.55; color: #98a69e; margin: 16px 0 0;">Night driving is the main use case, so dark mode is not an afterthought: the same four states, lifted in brightness so they read at a glance without lighting up the whole car.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

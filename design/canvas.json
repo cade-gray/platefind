@@ -1,0 +1,33 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "x": 0, "y": 0, "w": 1440, "h": 1500, "title": "Desktop app", "is_interactive": true },
+    { "file": "Mobile.dc.html", "x": 1560, "y": 0, "w": 390, "h": 844, "title": "Phone (dark, offline)", "is_interactive": true },
+    { "file": "Instructions.dc.html", "x": 2070, "y": 0, "w": 620, "h": 900, "title": "How it works" },
+    { "file": "ResetFlow.dc.html", "x": 0, "y": 1700, "w": 920, "h": 480, "title": "Reset confirmation" },
+    { "file": "Connectivity.dc.html", "x": 1040, "y": 1700, "w": 920, "h": 620, "title": "Online / offline states" }
+  ],
+  "annotations": [
+    {
+      "id": "note-brief",
+      "x": 0,
+      "y": -150,
+      "w": 900,
+      "text": "PlateFind redesign — Modern Dashboard direction.\nThe desktop and phone artboards are live: click states on the map or plates in the list to mark them, use the header chip to flip online/offline, flick the headlight switch for dark mode, and hit Reset to see the confirmation. The chips above each frame set theme, accent and how many states start found."
+    },
+    {
+      "id": "note-map",
+      "x": 1560,
+      "y": -150,
+      "w": 1130,
+      "text": "Real Albers USA projection (Census state boundaries), not a tile grid — Alaska and Hawaii ride in the standard insets. The eight states too small to tap get labelled callouts out in the Atlantic; both the shape and its tag toggle the same state."
+    },
+    {
+      "id": "note-specs",
+      "x": 0,
+      "y": 1560,
+      "w": 1960,
+      "text": "Below: the two flows worth pinning down before this gets built — the destructive reset, and every state the connection chip can be in."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}
