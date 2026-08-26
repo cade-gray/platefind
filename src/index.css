@@ -1,1 +1,221 @@
 @import "tailwindcss";
+
+/*
+ * Theme is driven by data-theme on <html>. Tailwind v4 compiles utilities to
+ * var(--color-*), so redefining the variables under [data-theme="dark"] swaps
+ * every utility at once — no dark: variant needed for ordinary colour work.
+ */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --font-sans: "Public Sans", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-display: "Space Grotesk", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, Menlo, Consolas, monospace;
+
+  --color-bg: #f4f6f5;
+  --color-surface: #ffffff;
+  --color-surface-2: #eef1ef;
+  --color-surface-3: #e6eae8;
+  --color-line: #dfe4e1;
+  --color-line-2: #c8d0cc;
+
+  --color-ink: #0f1a15;
+  --color-ink-2: #55625b;
+  --color-ink-3: #7f8c85;
+
+  --color-accent: #00a35c;
+  --color-accent-soft: #e2f5eb;
+  --color-accent-line: #9fdcbe;
+  --color-accent-ink: #ffffff;
+
+  --color-danger: #c4452c;
+  --color-danger-soft: #fbeae6;
+  --color-danger-line: #eec3b8;
+
+  --color-warn: #9a6a08;
+  --color-warn-soft: #fbf1dc;
+  --color-warn-line: #e6cd96;
+
+  --color-tile: #dfe5e1;
+  --color-tile-hover: #d1dad5;
+  --color-tile-line: #c9d2cd;
+  --color-tile-ink: #77847c;
+
+  --color-plate-face: #f2f1ea;
+  --color-plate-edge: #d6d4c9;
+  --color-plate-screw: #c2c0b3;
+  --color-plate-ink: #00a35c;
+
+  --shadow-card: 0 1px 2px rgba(15, 26, 21, 0.05), 0 10px 26px -16px rgba(15, 26, 21, 0.3);
+}
+
+[data-theme="dark"] {
+  --color-bg: #0d1411;
+  --color-surface: #141c18;
+  --color-surface-2: #1a231e;
+  --color-surface-3: #212c26;
+  --color-line: #26312b;
+  --color-line-2: #3a483f;
+
+  --color-ink: #e9efeb;
+  --color-ink-2: #98a69e;
+  --color-ink-3: #6d7b74;
+
+  --color-accent: #33d489;
+  --color-accent-soft: #102c1f;
+  --color-accent-line: #1d5a3c;
+  --color-accent-ink: #04140c;
+
+  --color-danger: #f0705a;
+  --color-danger-soft: #2b1512;
+  --color-danger-line: #55271f;
+
+  --color-warn: #e2a83f;
+  --color-warn-soft: #29200f;
+  --color-warn-line: #4d3c17;
+
+  --color-tile: #202b25;
+  --color-tile-hover: #2b3831;
+  --color-tile-line: #2e3a33;
+  --color-tile-ink: #7d8b83;
+
+  /* a plate is a physical object: it stays light even at night */
+  --color-plate-face: #e6e8e1;
+  --color-plate-edge: #a9afa5;
+  --color-plate-screw: #989e94;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.5), 0 12px 32px -18px rgba(0, 0, 0, 0.9);
+}
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color-scheme: light;
+  }
+
+  [data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    letter-spacing: -0.015em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* --- the wordmark is a license plate --- */
+  .platemark {
+    display: inline-block;
+    position: relative;
+    border-radius: 9px;
+    text-align: center;
+    background: var(--color-plate-face);
+    border: 2px solid var(--color-plate-edge);
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.16);
+  }
+  .platemark::before,
+  .platemark::after {
+    content: "";
+    position: absolute;
+    top: 0.5em;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--color-plate-screw);
+  }
+  .platemark::before { left: 9px; }
+  .platemark::after { right: 9px; }
+  .platemark-word {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--color-plate-ink);
+    line-height: 1.1;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6), 0 -1px 0 rgba(0, 0, 0, 0.13);
+  }
+
+  /* --- dark mode is a headlight switch --- */
+  .headlight {
+    position: relative;
+    border-radius: 999px;
+    border: 1px solid var(--color-line-2);
+    background: var(--color-surface-2);
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .headlight[data-mode="dark"] {
+    background: #0a1512;
+    border-color: #2d3d34;
+  }
+  .headlight-knob {
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    border-radius: 999px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-line-2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.24);
+    color: var(--color-ink-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.24s cubic-bezier(0.34, 0.8, 0.4, 1), background 0.2s, color 0.2s;
+  }
+  .headlight[data-mode="dark"] .headlight-knob {
+    background: var(--color-surface-3);
+    color: var(--color-accent);
+    filter: drop-shadow(0 0 6px var(--color-accent));
+  }
+
+  /* --- the board --- */
+  .state-shape {
+    fill: var(--color-tile);
+    stroke: var(--color-surface);
+    stroke-width: 0.9;
+    cursor: pointer;
+    transition: fill 0.15s, opacity 0.15s;
+  }
+  .state-shape:hover { fill: var(--color-tile-hover); }
+  .state-shape[data-found="true"] { fill: var(--color-accent); }
+  .state-shape[data-found="true"]:hover { opacity: 0.78; }
+  .state-shape[data-nearby="true"][data-found="false"] {
+    fill: var(--color-accent-soft);
+    stroke: var(--color-accent-line);
+    stroke-width: 1.2;
+  }
+
+  .callout-line { stroke: var(--color-tile-line); stroke-width: 1; fill: none; }
+  .callout-box { fill: var(--color-tile); stroke: var(--color-tile-line); stroke-width: 1; transition: fill 0.15s; }
+  .callout:hover .callout-box { fill: var(--color-tile-hover); stroke: var(--color-ink-3); }
+  .callout[data-found="true"] .callout-box { fill: var(--color-accent); stroke: var(--color-accent); }
+  .callout-label {
+    font-family: var(--font-display);
+    font-size: 12.5px;
+    font-weight: 700;
+    fill: var(--color-tile-ink);
+    text-anchor: middle;
+    dominant-baseline: central;
+    pointer-events: none;
+  }
+  .callout[data-found="true"] .callout-label { fill: var(--color-accent-ink); }
+}
