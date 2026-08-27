@@ -1,4 +1,5 @@
 import { Modal } from "./Modal";
+import { PlateArt } from "./PlateArt";
 import type { BoardPlate } from "../types";
 
 interface PlateDetailProps {
@@ -17,20 +18,24 @@ export function PlateDetail({ plate, onClose, onToggle }: PlateDetailProps) {
       </h2>
       <p className="mt-1 text-sm text-ink-2">{plate.design_name}</p>
 
-      <div
-        className="mt-5 flex h-40 flex-col items-center justify-between rounded-xl px-5 py-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,.22)]"
-        style={{ background: plate.face, border: `2px solid ${plate.edge}` }}
-      >
-        <span className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: plate.ink }}>
-          {plate.state}
-        </span>
-        <span className="font-mono text-5xl font-bold leading-none tracking-wider" style={{ color: plate.ink }}>
-          {plate.code ?? "—"}
-        </span>
-        <span className="text-xs font-semibold tracking-wide opacity-80" style={{ color: plate.ink }}>
-          {plate.design_name}
-        </span>
-      </div>
+      {plate.svg_code ? (
+        <PlateArt svg={plate.svg_code} className="mt-5 aspect-[2/1] w-full overflow-hidden rounded-xl" />
+      ) : (
+        <div
+          className="mt-5 flex aspect-[2/1] w-full flex-col items-center justify-between rounded-xl px-5 py-4 shadow-[inset_0_0_0_1px_rgba(255,255,255,.22)]"
+          style={{ background: plate.face, border: `2px solid ${plate.edge}` }}
+        >
+          <span className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: plate.ink }}>
+            {plate.state}
+          </span>
+          <span className="font-mono text-5xl font-bold leading-none tracking-wider" style={{ color: plate.ink }}>
+            {plate.code ?? "—"}
+          </span>
+          <span className="text-xs font-semibold tracking-wide opacity-80" style={{ color: plate.ink }}>
+            {plate.design_name}
+          </span>
+        </div>
+      )}
 
       {plate.design_description && (
         <p className="mt-5 text-[15px] leading-relaxed text-ink-2">{plate.design_description}</p>
