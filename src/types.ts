@@ -6,6 +6,8 @@ export interface Plate {
   design_name: string;
   design_description: string;
   design_reasoning: string;
+  /** Hand-authored plate artwork; null until a design has been drawn. */
+  svg_code: string | null;
 }
 
 /** A plate joined to the local map/colour data we hold for its state. */

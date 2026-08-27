@@ -1,3 +1,4 @@
+import { PlateArt } from "./PlateArt";
 import type { BoardPlate } from "../types";
 
 interface PlateThumbProps {
@@ -7,11 +8,25 @@ interface PlateThumbProps {
 }
 
 /**
- * A plate rendered in its real colours. We show the state, its postal code and
- * the design name rather than inventing a serial number.
+ * A plate at thumbnail size.
+ *
+ * When the API has artwork for the state we draw the real design; the colour
+ * card below is the fallback for a plate whose SVG has not been authored yet.
+ * Both are 2:1, the proportions of an actual 12x6in US plate.
  */
 export function PlateThumb({ plate, width = 106 }: PlateThumbProps) {
-  const height = width * 0.53;
+  const height = width * 0.5;
+
+  if (plate.svg_code) {
+    return (
+      <PlateArt
+        svg={plate.svg_code}
+        className="shrink-0 overflow-hidden rounded-md"
+        style={{ width, height }}
+      />
+    );
+  }
+
   return (
     <div
       className="flex shrink-0 flex-col items-center justify-between rounded-md shadow-[inset_0_0_0_1px_rgba(255,255,255,.22)]"
