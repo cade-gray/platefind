@@ -137,7 +137,7 @@ export default function App() {
               <div>
                 <h2 className="text-xl font-semibold">Map</h2>
                 <p className="mt-1 text-[13px] text-ink-3">
-                  Tap a state to mark it.
+                  Tap a state to mark it or check it off in the list below.
                 </p>
               </div>
               <div className="flex items-center gap-4 pt-1">
