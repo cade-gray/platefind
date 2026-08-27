@@ -193,9 +193,14 @@
     stroke: var(--color-surface);
     stroke-width: 0.9;
     cursor: pointer;
+    outline: none;
     transition: fill 0.15s, opacity 0.15s;
   }
   .state-shape:hover { fill: var(--color-tile-hover); }
+  .state-shape:focus-visible {
+    stroke: var(--color-accent);
+    stroke-width: 2;
+  }
   .state-shape[data-found="true"] { fill: var(--color-accent); }
   .state-shape[data-found="true"]:hover { opacity: 0.78; }
   .state-shape[data-nearby="true"][data-found="false"] {
