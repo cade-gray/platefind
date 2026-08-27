@@ -135,9 +135,9 @@ export default function App() {
           <section className="rounded-2xl border border-line bg-surface p-4 shadow-card sm:p-6">
             <div className="mb-3 flex flex-wrap items-start justify-between gap-2">
               <div>
-                <h2 className="text-xl font-semibold">The board</h2>
+                <h2 className="text-xl font-semibold">Map</h2>
                 <p className="mt-1 text-[13px] text-ink-3">
-                  Tap a state to mark it. The eight smallest have their own tags out in the Atlantic.
+                  Tap a state to mark it.
                 </p>
               </div>
               <div className="flex items-center gap-4 pt-1">
