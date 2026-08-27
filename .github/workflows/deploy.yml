@@ -35,6 +35,12 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GH_TOKEN }}
 
+      # No `cache-to: type=gha` here. This job runs on `pull_request: closed`,
+      # whose Actions cache scope is the PR's own ref -- which no longer exists
+      # once the PR is merged, so reserving a cache blob in it fails and takes
+      # the whole step (and the deploy below) down with it. The build is ~10s
+      # anyway. If caching is ever worth it, use a registry cache against GHCR
+      # rather than type=gha, or move this job to a `push` trigger on main.
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
@@ -43,8 +49,6 @@ jobs:
           tags: |
             ghcr.io/cade-gray/platefind:latest
             ghcr.io/cade-gray/platefind:${{ github.sha }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Deploy on VPS (docker compose pull + up)
         uses: appleboy/ssh-action@v1.0.3
