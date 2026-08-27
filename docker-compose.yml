@@ -1,0 +1,6 @@
+services:
+  platefind:
+    image: ghcr.io/cade-gray/platefind:latest
+    restart: unless-stopped
+    ports:
+      - "3005:80"

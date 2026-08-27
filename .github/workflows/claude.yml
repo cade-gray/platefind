@@ -19,9 +19,9 @@ jobs:
       (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      pull-requests: read
-      issues: read
+      contents: write # Claude pushes its working branch
+      pull-requests: write # ...and opens the PR itself, so it can set a linking body
+      issues: write
       id-token: write
       actions: read # Required for Claude to read CI results on PRs
     steps:
@@ -36,15 +36,20 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
+          # The default Claude GitHub App token deliberately has no `workflows`
+          # write scope, so Claude cannot touch .github/workflows/** with it.
+          # CLAUDE_GH_PAT is a PAT that *does* carry that scope; when it is
+          # present Claude can edit workflow files, and this falls back to the
+          # App token when it is not set.
+          github_token: ${{ secrets.CLAUDE_GH_PAT }}
+
           # This is an optional setting that allows Claude to read CI results on PRs
           additional_permissions: |
             actions: read
 
-          # Optional: Give a custom prompt to Claude. If this is not specified, Claude will perform the instructions specified in the comment that tagged it.
-          # prompt: 'Update the pull request description to include a summary of changes.'
-
-          # Optional: Add claude_args to customize behavior and configuration
-          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
-          # or https://code.claude.com/docs/en/cli-reference for available options
-          # claude_args: '--allowed-tools Bash(gh pr *)'
-
+          # Claude does not open PRs on its own by default -- it pushes a branch
+          # and hands back a pre-filled "Create PR" link, so anything typed in
+          # that link (including the "Closes #N" line) is lost if the PR gets
+          # opened any other way. Allowing `gh pr create` lets it open the PR
+          # directly; the "Closes #N" convention lives in CLAUDE.md.
+          claude_args: '--allowed-tools "Bash(gh pr create:*),Bash(gh pr edit:*),Bash(gh pr view:*),Bash(gh issue view:*),Bash(npm ci),Bash(npm run lint),Bash(npm run build)"'
