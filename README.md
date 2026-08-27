@@ -55,3 +55,9 @@ harder on its own — it borders nothing, so it cannot open a seam.
 
 `design/` holds the multi-artboard design canvas the redesign came from, plus
 the `.dc.html` sources it is seeded from.
+
+### Deployment
+
+`docker build .` produces a small Caddy image serving the built app. See
+[`deploy/README.md`](deploy/README.md) for the CI/CD workflow, required
+GitHub secrets/variables, and droplet + Caddy setup.

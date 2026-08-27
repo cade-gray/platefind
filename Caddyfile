@@ -1,0 +1,11 @@
+:80 {
+	root * /srv
+	encode gzip zstd
+
+	# service worker must never be served from a cache, or clients can get stuck on a stale app shell
+	@sw path /sw.js
+	header @sw Cache-Control "no-cache"
+
+	try_files {path} /index.html
+	file_server
+}
