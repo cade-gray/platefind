@@ -178,7 +178,7 @@ export default function App() {
               onChange={(event) => setQuery(event.target.value)}
               placeholder="Search a state, slogan or design"
               aria-label="Search plates"
-              className="h-11 w-full rounded-lg border border-line-2 bg-surface pl-11 pr-10 text-[14.5px] outline-none transition-shadow placeholder:text-ink-3 focus:border-accent focus:ring-[3px] focus:ring-accent-soft"
+              className="h-11 w-full rounded-lg border border-line-2 bg-surface pl-11 pr-10 text-base outline-none transition-shadow placeholder:text-ink-3 focus:border-accent focus:ring-[3px] focus:ring-accent-soft sm:text-[14.5px]"
             />
             {query && (
               <button
