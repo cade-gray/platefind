@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ConfirmReset } from "./components/ConfirmReset";
 import { ConnectionBanner, ConnectionChip } from "./components/ConnectionChip";
 import { HeadlightToggle } from "./components/HeadlightToggle";
@@ -30,6 +30,7 @@ export default function App() {
   const [detailId, setDetailId] = useState<number | null>(null);
   const [showHow, setShowHow] = useState(false);
   const [showReset, setShowReset] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     document.title = "PlateFind — find a plate from every state";
@@ -173,9 +174,19 @@ export default function App() {
               <SearchIcon />
             </span>
             <input
+              ref={searchInputRef}
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
+              onFocus={() => {
+                // Mobile browsers auto-scroll the focused input to the middle of the
+                // viewport; once the keyboard opens that shrinks the viewport and hides
+                // the results below it. Re-scroll to the top once the keyboard has
+                // finished animating in so the results stay visible instead.
+                window.setTimeout(() => {
+                  searchInputRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }, 300);
+              }}
               placeholder="Search a state, slogan or design"
               aria-label="Search plates"
               className="h-11 w-full rounded-lg border border-line-2 bg-surface pl-11 pr-10 text-base outline-none transition-shadow placeholder:text-ink-3 focus:border-accent focus:ring-[3px] focus:ring-accent-soft sm:text-[14.5px]"
