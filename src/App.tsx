@@ -30,6 +30,7 @@ export default function App() {
   const [detailId, setDetailId] = useState<number | null>(null);
   const [showHow, setShowHow] = useState(false);
   const [showReset, setShowReset] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -185,7 +186,9 @@ export default function App() {
                 // this row being sticky, it stays pinned there even if the browser tries
                 // to re-scroll once the keyboard finishes animating in.
                 searchInputRef.current?.scrollIntoView({ block: "start" });
+                setSearchFocused(true);
               }}
+              onBlur={() => setSearchFocused(false)}
               placeholder="Search a state, slogan or design"
               aria-label="Search plates"
               className="h-11 w-full rounded-lg border border-line-2 bg-surface pl-11 pr-10 text-base outline-none transition-shadow placeholder:text-ink-3 focus:border-accent focus:ring-[3px] focus:ring-accent-soft sm:text-[14.5px]"
@@ -227,40 +230,50 @@ export default function App() {
           </span>
         </div>
 
-        {visible.length > 0 ? (
-          <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-            {visible.map((plate) => (
-              <PlateCard
-                key={plate.id}
-                plate={plate}
-                nearby={Boolean(plate.code && nearbyCodes.has(plate.code))}
-                onToggle={toggle}
-                onOpen={(plate) => setDetailId(plate.id)}
-              />
-            ))}
-          </div>
-        ) : (
-          board.length > 0 && (
-            <div className="mt-4 flex flex-col items-center justify-center rounded-2xl border border-line bg-surface px-6 py-16 text-center">
-              <h3 className="text-lg font-semibold">
-                {query ? `Nothing matches “${query}”` : "Nothing here yet"}
-              </h3>
-              <p className="mt-2 max-w-sm text-sm text-ink-2">
-                Try a state name, a slogan like “Live Free or Die”, or clear the filter.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setQuery("");
-                  setFilter("all");
-                }}
-                className="mt-4 flex h-11 items-center rounded-lg border border-line-2 bg-surface px-4 text-sm font-semibold transition-colors hover:bg-surface-2"
-              >
-                Clear search and filters
-              </button>
+        {/*
+          Typing narrows `visible` and shrinks this block, which shrinks the whole
+          page. If that happens while the search bar is pinned near the top of the
+          scrolled viewport, the browser has nowhere left to scroll and snaps back
+          up — yanking the input (and the keyboard's focus target) with it. Reserve
+          a full screen's worth of height while focused so the page never gets
+          shorter than the current scroll position while typing.
+        */}
+        <div className={searchFocused ? "min-h-[100dvh] sm:min-h-0" : undefined}>
+          {visible.length > 0 ? (
+            <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+              {visible.map((plate) => (
+                <PlateCard
+                  key={plate.id}
+                  plate={plate}
+                  nearby={Boolean(plate.code && nearbyCodes.has(plate.code))}
+                  onToggle={toggle}
+                  onOpen={(plate) => setDetailId(plate.id)}
+                />
+              ))}
             </div>
-          )
-        )}
+          ) : (
+            board.length > 0 && (
+              <div className="mt-4 flex flex-col items-center justify-center rounded-2xl border border-line bg-surface px-6 py-16 text-center">
+                <h3 className="text-lg font-semibold">
+                  {query ? `Nothing matches “${query}”` : "Nothing here yet"}
+                </h3>
+                <p className="mt-2 max-w-sm text-sm text-ink-2">
+                  Try a state name, a slogan like “Live Free or Die”, or clear the filter.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setQuery("");
+                    setFilter("all");
+                  }}
+                  className="mt-4 flex h-11 items-center rounded-lg border border-line-2 bg-surface px-4 text-sm font-semibold transition-colors hover:bg-surface-2"
+                >
+                  Clear search and filters
+                </button>
+              </div>
+            )
+          )}
+        </div>
 
         <footer className="mt-8 flex flex-col gap-1.5 border-t border-line pt-5 text-[13px] text-ink-3 sm:flex-row sm:items-center sm:justify-between">
           <span>Plate list cached on this device {savedAtLabel(savedAt)} · your finds never leave this device</span>
