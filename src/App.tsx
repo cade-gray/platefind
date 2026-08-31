@@ -168,7 +168,7 @@ export default function App() {
           </section>
         </div>
 
-        <div className="mt-6 flex flex-wrap items-center gap-3">
+        <div className="sticky top-0 z-20 -mx-4 mt-6 flex flex-wrap items-center gap-3 border-b border-line bg-bg px-4 py-3 sm:static sm:mx-0 sm:border-0 sm:px-0 sm:py-0">
           <div className="relative w-full max-w-[460px] grow">
             <span className="pointer-events-none absolute left-3.5 top-3.5 text-ink-3">
               <SearchIcon />
@@ -179,13 +179,12 @@ export default function App() {
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               onFocus={() => {
-                // Mobile browsers auto-scroll the focused input to the middle of the
-                // viewport; once the keyboard opens that shrinks the viewport and hides
-                // the results below it. Re-scroll to the top once the keyboard has
-                // finished animating in so the results stay visible instead.
-                window.setTimeout(() => {
-                  searchInputRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }, 300);
+                // Mobile browsers default to centering a focused input in the viewport,
+                // which then lands under the keyboard once it opens, hiding the results
+                // below it. Force it to the top of the viewport instead — combined with
+                // this row being sticky, it stays pinned there even if the browser tries
+                // to re-scroll once the keyboard finishes animating in.
+                searchInputRef.current?.scrollIntoView({ block: "start" });
               }}
               placeholder="Search a state, slogan or design"
               aria-label="Search plates"
