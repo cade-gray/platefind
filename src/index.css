@@ -224,3 +224,8 @@
   }
   .callout[data-found="true"] .callout-label { fill: var(--color-accent-ink); }
 }
+
+@keyframes toast-timer {
+  from { width: 100%; }
+  to { width: 0%; }
+}
