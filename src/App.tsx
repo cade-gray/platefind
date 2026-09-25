@@ -8,6 +8,7 @@ import { PlateCard } from "./components/PlateCard";
 import { PlateDetail } from "./components/PlateDetail";
 import { PlateMark } from "./components/PlateMark";
 import { ProgressPanel } from "./components/ProgressPanel";
+import { StateFoundToast } from "./components/StateFoundToast";
 import { UsMap } from "./components/UsMap";
 import { codeForState, plateColors, plateEdge } from "./data/states";
 import { savedAtLabel } from "./lib/savedAt";
@@ -31,6 +32,7 @@ export default function App() {
   const [showHow, setShowHow] = useState(false);
   const [showReset, setShowReset] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [justFoundId, setJustFoundId] = useState<number | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -64,6 +66,7 @@ export default function App() {
   const lastFound = board.find((plate) => plate.id === lastFoundId) ?? null;
   // re-read from the board so the dialog's found state stays live while it is open
   const detail = board.find((plate) => plate.id === detailId) ?? null;
+  const justFound = board.find((plate) => plate.id === justFoundId) ?? null;
 
   // The "Nearby" filter only makes sense once we actually know where you are.
   const nearbyReady = nearby.status === "ready" && nearbyCodes.size > 0;
@@ -82,9 +85,17 @@ export default function App() {
     });
   }, [board, filter, nearbyCodes, query]);
 
+  // Only a fresh find gets the confirmation toast — unmarking one (whether by
+  // tapping it again or hitting Undo) shouldn't pop up anything of its own.
+  const handleToggle = (id: number) => {
+    const wasFound = found.has(id);
+    toggle(id);
+    setJustFoundId(wasFound ? null : id);
+  };
+
   const toggleByCode = (code: string) => {
     const plate = byCode.get(code);
-    if (plate) toggle(plate.id);
+    if (plate) handleToggle(plate.id);
   };
 
   const filters: Array<{ key: Filter; label: string }> = [
@@ -130,7 +141,7 @@ export default function App() {
             lastFound={lastFound}
             nearby={nearby}
             plateFor={(code) => byCode.get(code)}
-            onToggle={toggle}
+            onToggle={handleToggle}
             onReset={() => setShowReset(true)}
           />
 
@@ -246,7 +257,7 @@ export default function App() {
                   key={plate.id}
                   plate={plate}
                   nearby={Boolean(plate.code && nearbyCodes.has(plate.code))}
-                  onToggle={toggle}
+                  onToggle={handleToggle}
                   onOpen={(plate) => setDetailId(plate.id)}
                 />
               ))}
@@ -286,7 +297,7 @@ export default function App() {
         </footer>
       </main>
 
-      <PlateDetail plate={detail} onClose={() => setDetailId(null)} onToggle={toggle} />
+      <PlateDetail plate={detail} onClose={() => setDetailId(null)} onToggle={handleToggle} />
       <HowToPlay open={showHow} onClose={() => setShowHow(false)} />
       <ConfirmReset
         open={showReset}
@@ -295,8 +306,19 @@ export default function App() {
         onConfirm={() => {
           reset();
           setShowReset(false);
+          setJustFoundId(null);
         }}
       />
+      {justFound && (
+        <StateFoundToast
+          plate={justFound}
+          onUndo={() => {
+            toggle(justFound.id);
+            setJustFoundId(null);
+          }}
+          onDismiss={() => setJustFoundId(null)}
+        />
+      )}
     </div>
   );
 }
